@@ -29,9 +29,11 @@ jobs:
           sed -i "s|docker.io/h4x3rotab/cicd-test:latest|${{ secrets.DOCKER_IMAGE }}:${{ github.sha }}|g" docker-compose.yml
           cat docker-compose.yml
 
+      - name: Install Phala CLI
+        run: npm install -g phala
+
       - name: Deploy to Phala Cloud
-        uses: Leechael/phala-deploy-action@v2
-        with:
-          phala-api-key: ${{ secrets.PHALA_CLOUD_API_KEY }}
-          cvm-name: ${{ secrets.APP_NAME }}
-          compose-file: './docker-compose.yml'
+        env:
+          PHALA_CLOUD_API_KEY: ${{ secrets.PHALA_CLOUD_API_KEY }}
+        run: |
+          phala deploy -c docker-compose.yml -n ${{ secrets.APP_NAME }} --non-dev-os
