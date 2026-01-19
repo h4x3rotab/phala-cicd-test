@@ -1,0 +1,5 @@
+services:
+  web:
+    image: docker.io/h4x3rotab/cicd-test:latest
+    ports:
+      - "80:80"
